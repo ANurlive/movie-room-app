@@ -1,9 +1,6 @@
-function App() {
-  return (
-    <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </>
-  );
-}
+import React from 'react';
+import { HomePage } from './pages/HomePage/HomePage';
 
-export default App;
+export const App: React.FC = () => {
+  return <HomePage />;
+};
