@@ -1,1 +1,20 @@
-@import 'tailwindcss';
+@import './myNormalize.css';
+@import "tailwindcss";
+
+:root {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 14px;
+    color: white
+}
+body {
+    background-color: #111827;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}

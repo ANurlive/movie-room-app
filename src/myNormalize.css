@@ -1,0 +1,64 @@
+/* Нормализация блочной модели */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Убираею внутренние отступы слева тегам списка, у которых есть атрибут class */
+:where(ol, ul):where([class]) {
+  padding-left: 0;
+}
+
+/* Убираю внешние отступы body и двум другим, у которых есть атрибут class */
+body,
+:where(blockquote, figure):where([class]) {
+  margin: 0;
+}
+/* Убираем внешние отступы по вертикали нужным элементам, у которых есть атрибут класс */
+:where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl):where([class]) {
+  margin-block: 0;
+}
+:where(dd[class]) {
+  margin-left: 0;
+}
+/* Убираю стандартный маркер маркированному списку, у которого есть атрибут class */
+:where(ul[class]) {
+  list-style: none;
+}
+/* Упрощаем работу с изображениями */
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Наследуем свойства шрифт для полей ввода */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+html {
+  /* пригодится в большинстве случаев, когда например нужно будет прижать футер к низу сайта  */
+  height: 100%;
+  /* плавный скролл при нажатии на якорную ссылку и переходе по странице  */
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100%;
+  /* унифицированный интерлиньяж */
+  line-height: 1.5;
+}
+
+/* Удаляю все анимации и переходы для людей, которые предпочитают их не использовать */
+/* @media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+} */

@@ -1,6 +1,8 @@
-import React from 'react';
+import { Component } from 'react';
 import { HomePage } from './pages/HomePage/HomePage';
 
-export const App: React.FC = () => {
-  return <HomePage />;
-};
+export default class App extends Component {
+  render() {
+    return <HomePage />;
+  }
+}
