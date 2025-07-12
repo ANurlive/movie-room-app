@@ -1,13 +1,16 @@
 @import './myNormalize.css';
-@import "tailwindcss";
+@import 'tailwindcss';
 
+/* @theme {
+  --color-logo: #e50914;
+} */
 :root {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 14px;
-    color: white
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 14px;
+  color: white;
 }
 body {
-    background-color: #111827;
+  background-color: black;
 }
 
 .visually-hidden {

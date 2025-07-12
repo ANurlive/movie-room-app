@@ -2,13 +2,16 @@ import { Component } from 'react';
 import type { MovieCardProps } from '../MovieCard/MovieCard';
 import MovieCard from '../MovieCard/MovieCard';
 
-type MovieListProps = {
+export type MovieListProps = {
   movieList: (MovieCardProps & { id: number })[] | null;
 };
 
 export default class MovieList extends Component<MovieListProps> {
   render() {
     const { movieList } = this.props;
+    if (movieList?.length === 0) {
+      return <div className="">Sorry! There is no movie with such title</div>;
+    }
     return (
       <ul>
         {movieList &&
