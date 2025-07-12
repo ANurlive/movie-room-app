@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import Button, { ButtonType } from '../Button/Button';
+import Button from '../Button/Button';
 
 type SearchBarProps = {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -10,6 +10,7 @@ type SearchBarProps = {
 export default class SearchBar extends Component<SearchBarProps> {
   render() {
     const { handleChange, handleSubmit, inputValue } = this.props;
+
     return (
       <form className="flex gap-2 mb-6" onSubmit={handleSubmit}>
         <label htmlFor="search" className="visually-hidden">
@@ -22,7 +23,7 @@ export default class SearchBar extends Component<SearchBarProps> {
           onChange={handleChange}
           value={inputValue}
         />
-        <Button type={ButtonType.Submit} text="Search" />
+        <Button type="submit">Search</Button>
       </form>
     );
   }

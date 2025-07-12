@@ -1,5 +1,6 @@
 import getShortMovieList from '../helpers/getShortMovieList';
 import handleApiErrors from '../helpers/handleAPIErrors';
+import type { MovieItem, MoviesGetResponse } from '../types';
 
 const URL = 'https://api.themoviedb.org/3';
 const API_TOKEN =
@@ -13,24 +14,25 @@ const options = {
   },
 };
 
-export const getMoviesList = async (page: number = 1) => {
-  const response = await handleApiErrors(
-    await fetch(URL + `/movie/popular?language=en-US&page=${page}`, options)
-  );
-  const results = await response.json();
-  console.log(results);
-  return getShortMovieList(results?.results);
+const movieService = {
+  getMoviesList: async (page = 1): Promise<MovieItem[]> => {
+    const response = await handleApiErrors(
+      await fetch(`${URL}/movie/popular?language=en-US&page=${page}`, options)
+    );
+    const data: MoviesGetResponse = await response.json();
+    return getShortMovieList(data.results);
+  },
+
+  searchMovie: async (title: string, page = 1): Promise<MovieItem[]> => {
+    const response = await handleApiErrors(
+      await fetch(
+        `${URL}/search/movie?query=${title}&include_adult=false&language=en-US&page=${page}`,
+        options
+      )
+    );
+    const data: MoviesGetResponse = await response.json();
+    return getShortMovieList(data.results);
+  },
 };
 
-export const searchMovie = async (title: string, page: number = 1) => {
-  if (title === '') return getMoviesList();
-  const response = await handleApiErrors(
-    await fetch(
-      URL +
-        `/search/movie?query=${title}&include_adult=false&language=en-US&page=${page}`,
-      options
-    )
-  );
-  const results = await response.json();
-  return getShortMovieList(results?.results);
-};
+export default movieService;

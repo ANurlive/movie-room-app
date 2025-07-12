@@ -1,17 +1,14 @@
 import { Component } from 'react';
+import type { MovieItem } from '../../types';
 
 const baseUrl = 'https://image.tmdb.org/t/p/w500';
 
-export type MovieCardProps = {
-  posterPath: string;
-  title: string;
-  overview: string;
-  releaseDate: string;
-};
+type Props = Omit<MovieItem, 'id'>;
 
-export default class MovieCard extends Component<MovieCardProps> {
+export default class MovieCard extends Component<Props> {
   render() {
     const { posterPath, title, overview, releaseDate } = this.props;
+
     return (
       <div className="flex gap-4 w-full p-4 bg-white/10 mb-4">
         <div className="w-[100px] h-[150px] overflow-hidden rounded">

@@ -1,29 +1,27 @@
 import { Component } from 'react';
-import type { MovieCardProps } from '../MovieCard/MovieCard';
 import MovieCard from '../MovieCard/MovieCard';
+import EmptyResult from '../EmptyResult/EmptyResult';
+import type { MovieItem } from '../../types';
 
-export type MovieListProps = {
-  movieList: (MovieCardProps & { id: number })[] | null;
+export type Props = {
+  movieList: MovieItem[];
 };
 
-export default class MovieList extends Component<MovieListProps> {
+export default class MovieList extends Component<Props> {
   render() {
     const { movieList } = this.props;
-    if (movieList?.length === 0) {
-      return <div className="">Sorry! There is no movie with such title</div>;
+
+    if (movieList.length === 0) {
+      return <EmptyResult text="Sorry! There is no movie with such title" />;
     }
+
     return (
       <ul>
         {movieList &&
-          movieList.map(({ title, overview, posterPath, releaseDate, id }) => {
+          movieList.map(({ id, ...rest }) => {
             return (
               <li key={id}>
-                <MovieCard
-                  title={title}
-                  overview={overview}
-                  posterPath={posterPath}
-                  releaseDate={releaseDate}
-                />
+                <MovieCard {...rest} />
               </li>
             );
           })}
