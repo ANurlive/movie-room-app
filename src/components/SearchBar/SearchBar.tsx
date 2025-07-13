@@ -13,14 +13,14 @@ export default class SearchBar extends Component<SearchBarProps> {
     const { handleChange, handleSubmit, inputValue } = this.props;
 
     return (
-      <form className="flex gap-2 mb-6 items-center" onSubmit={handleSubmit}>
+      <form className="flex gap-2 items-center" onSubmit={handleSubmit}>
         <label htmlFor="search" className="visually-hidden">
           {SEARCH_MESSAGES.LABEL}
         </label>
         <input
           type="text"
           id="search"
-          className="border px-3 py-1 rounded text-sm focus:outline-none focus-ring-2"
+          className="border px-3 py-1 rounded text-sm focus:outline-none focus-ring-2 md:text-lg md:w-100"
           onChange={handleChange}
           value={inputValue}
           placeholder={SEARCH_MESSAGES.PLACEHOLDER}

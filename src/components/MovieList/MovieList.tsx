@@ -16,7 +16,7 @@ export default class MovieList extends Component<Props> {
     }
 
     return (
-      <ul className="flex flex-col gap-4">
+      <ul className="flex flex-col gap-4 mb-6">
         {movieList &&
           movieList.map(({ id, ...rest }) => {
             return (

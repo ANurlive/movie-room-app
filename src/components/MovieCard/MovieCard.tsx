@@ -19,9 +19,13 @@ export default class MovieCard extends Component<Props> {
           />
         </div>
         <div className="flex flex-1 flex-col gap-2 justify-items-start items-start">
-          <h3 className="font-bold text-sm">{title}</h3>
-          <p className="text-xs">{overview}</p>
-          <p className="text-xs">{releaseDate}</p>
+          <h3 className="font-bold text-sm sm:text-base md:text-xl lg:text-2xl">
+            {title}
+          </h3>
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg">
+            {overview}
+          </p>
+          <p className="text-xs md:text-base">{releaseDate}</p>
         </div>
       </div>
     );

@@ -8,6 +8,9 @@ import { LS_KEYS } from '../../constants';
 import type { MovieItem } from '../../types';
 import movieService from '../../services/movieAPIs';
 import { ApiError } from '../../helpers/handleAPIErrors';
+import Button from '../../components/Button/Button';
+import { HOME_PAGE_MESSAGES } from './messages';
+import BrokenComponent from '../../components/BrokenComponent/BrokenComponent';
 
 export default class HomePage extends Component {
   state = {
@@ -15,6 +18,7 @@ export default class HomePage extends Component {
     movieList: [] as MovieItem[],
     loading: false,
     error: null as number | null,
+    showBroken: false,
   };
 
   loadContent = async () => {
@@ -36,7 +40,8 @@ export default class HomePage extends Component {
           error: error.status,
         });
       } else {
-        console.log('unexpected error');
+        console.log(HOME_PAGE_MESSAGES.UNEXPECTED_API_MESSAGE);
+        this.setState({ loading: false, error: 'unexpected' });
       }
     }
   };
@@ -56,20 +61,36 @@ export default class HomePage extends Component {
     this.setState({ inputValue: value });
   };
 
+  handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const action = (event.currentTarget as HTMLButtonElement).dataset.action;
+    if (action === 'load-again') {
+      this.setState({ showBroken: true });
+    }
+  };
   render() {
     const { inputValue, movieList, loading, error } = this.state;
 
     return (
       <Layout>
-        <h2 className="visually-hidden">Home page</h2>
+        <h2 className="visually-hidden">{HOME_PAGE_MESSAGES.HEADING}</h2>
         <SearchBar
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
           inputValue={inputValue}
         />
         {loading && <Loader />}
-        {error !== null && <ErrorMessage errorCode={error} />}
+        {error && <ErrorMessage errorCode={error} />}
         {!loading && !error && <MovieList movieList={movieList} />}
+        <div className="flex justify-end">
+          {this.state.showBroken && (
+            <BrokenComponent
+              errorMessage={HOME_PAGE_MESSAGES.ERROR_BUTTON_MESSAGE}
+            />
+          )}
+          <Button onClick={this.handleClick} data-action="load-again">
+            {HOME_PAGE_MESSAGES.ERROR_BUTTON}
+          </Button>
+        </div>
       </Layout>
     );
   }
