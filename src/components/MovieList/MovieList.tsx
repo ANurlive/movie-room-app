@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import MovieCard from '../MovieCard/MovieCard';
-import EmptyResult from '../EmptyResult/EmptyResult';
+import EmptySearchResult from '../EmptySearchResult/EmptySearchResult';
 import type { MovieItem } from '../../types';
 
 export type Props = {
@@ -12,11 +12,11 @@ export default class MovieList extends Component<Props> {
     const { movieList } = this.props;
 
     if (movieList.length === 0) {
-      return <EmptyResult text="Sorry! There is no movie with such title" />;
+      return <EmptySearchResult />;
     }
 
     return (
-      <ul>
+      <ul className="flex flex-col gap-4">
         {movieList &&
           movieList.map(({ id, ...rest }) => {
             return (

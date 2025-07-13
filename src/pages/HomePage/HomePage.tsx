@@ -7,13 +7,14 @@ import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import { LS_KEYS } from '../../constants';
 import type { MovieItem } from '../../types';
 import movieService from '../../services/movieAPIs';
+import { ApiError } from '../../helpers/handleAPIErrors';
 
 export default class HomePage extends Component {
   state = {
     inputValue: localStorage.getItem(LS_KEYS.INPUT_VALUE) || '',
     movieList: [] as MovieItem[],
     loading: false,
-    error: null as string | null,
+    error: null as number | null,
   };
 
   loadContent = async () => {
@@ -28,11 +29,15 @@ export default class HomePage extends Component {
       }
       this.setState({ movieList, loading: false });
     } catch (error) {
-      console.log(error);
-      this.setState({
-        loading: false,
-        error: 'Something wrong with the network, please check the connection',
-      });
+      if (error instanceof ApiError) {
+        console.log(error.serverMessage);
+        this.setState({
+          loading: false,
+          error: error.status,
+        });
+      } else {
+        console.log('unexpected error');
+      }
     }
   };
 
@@ -53,8 +58,6 @@ export default class HomePage extends Component {
 
   render() {
     const { inputValue, movieList, loading, error } = this.state;
-    if (loading) return <Loader />;
-    if (error) return <ErrorMessage text={error} />;
 
     return (
       <Layout>
@@ -64,7 +67,9 @@ export default class HomePage extends Component {
           handleSubmit={this.handleSubmit}
           inputValue={inputValue}
         />
-        <MovieList movieList={movieList} />
+        {loading && <Loader />}
+        {error !== null && <ErrorMessage errorCode={error} />}
+        {!loading && !error && <MovieList movieList={movieList} />}
       </Layout>
     );
   }

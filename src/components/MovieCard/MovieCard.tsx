@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import type { MovieItem } from '../../types';
 
-const baseUrl = 'https://image.tmdb.org/t/p/w500';
+const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 type Props = Omit<MovieItem, 'id'>;
 
@@ -10,10 +10,10 @@ export default class MovieCard extends Component<Props> {
     const { posterPath, title, overview, releaseDate } = this.props;
 
     return (
-      <div className="flex gap-4 w-full p-4 bg-white/10 mb-4">
+      <div className="flex gap-4 w-full p-4 bg-white/10">
         <div className="w-[100px] h-[150px] overflow-hidden rounded">
           <img
-            src={`${baseUrl}${posterPath}`}
+            src={`${IMAGE_BASE_URL}${posterPath}`}
             alt={`${title} movie image`}
             className="w-full h-full object-cover"
           />

@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import Button from '../Button/Button';
+import { SEARCH_MESSAGES } from './messages';
 
 type SearchBarProps = {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -12,18 +13,19 @@ export default class SearchBar extends Component<SearchBarProps> {
     const { handleChange, handleSubmit, inputValue } = this.props;
 
     return (
-      <form className="flex gap-2 mb-6" onSubmit={handleSubmit}>
+      <form className="flex gap-2 mb-6 items-center" onSubmit={handleSubmit}>
         <label htmlFor="search" className="visually-hidden">
-          Search input
+          {SEARCH_MESSAGES.LABEL}
         </label>
         <input
           type="text"
           id="search"
-          className="border px-1"
+          className="border px-3 py-1 rounded text-sm focus:outline-none focus-ring-2"
           onChange={handleChange}
           value={inputValue}
+          placeholder={SEARCH_MESSAGES.PLACEHOLDER}
         />
-        <Button type="submit">Search</Button>
+        <Button type="submit">{SEARCH_MESSAGES.BUTTON}</Button>
       </form>
     );
   }
