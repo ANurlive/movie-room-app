@@ -63,7 +63,7 @@ export default class HomePage extends Component {
 
   handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const action = (event.currentTarget as HTMLButtonElement).dataset.action;
-    if (action === 'load-again') {
+    if (action === 'throw-error') {
       this.setState({ showBroken: true });
     }
   };
@@ -87,7 +87,7 @@ export default class HomePage extends Component {
               errorMessage={HOME_PAGE_MESSAGES.ERROR_BUTTON_MESSAGE}
             />
           )}
-          <Button onClick={this.handleClick} data-action="load-again">
+          <Button onClick={this.handleClick} data-action="throw-error">
             {HOME_PAGE_MESSAGES.ERROR_BUTTON}
           </Button>
         </div>
