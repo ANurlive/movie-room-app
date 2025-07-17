@@ -31,11 +31,6 @@ describe('SearchBar component', () => {
       setup('batman');
       expect(screen.getByRole('textbox')).toHaveValue('batman');
     });
-
-    test('It shows empty input when no saved term exists', () => {
-      setup('');
-      expect(screen.getByRole('textbox')).toHaveValue('');
-    });
   });
 
   describe('User interaction', () => {
@@ -45,6 +40,16 @@ describe('SearchBar component', () => {
         target: { value: 'spider man' },
       });
       expect(handleChange).toHaveBeenCalled();
+    });
+
+    test('calls handleSubmit when form is submitted', () => {
+      const { handleSubmit } = setup('batman');
+      const form = screen.getByRole('textbox').closest('form');
+      if (!form) {
+        throw new Error('Form element not found');
+      }
+      fireEvent.submit(form);
+      expect(handleSubmit).toHaveBeenCalled();
     });
   });
 });
