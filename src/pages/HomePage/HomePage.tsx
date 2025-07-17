@@ -29,7 +29,9 @@ export default class HomePage extends Component {
       if (this.state.inputValue === '') {
         movieList = await movieService.getMoviesList();
       } else {
-        movieList = await movieService.searchMovie(this.state.inputValue);
+        const trimmedInput = this.state.inputValue.trim();
+        localStorage.setItem(LS_KEYS.INPUT_VALUE, trimmedInput);
+        movieList = await movieService.searchMovie(trimmedInput);
       }
       this.setState({ movieList, loading: false });
     } catch (error) {
@@ -56,9 +58,8 @@ export default class HomePage extends Component {
   };
 
   handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    localStorage.setItem(LS_KEYS.INPUT_VALUE, value);
-    this.setState({ inputValue: value });
+    const inputValue = event.target.value;
+    this.setState({ inputValue });
   };
 
   handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
