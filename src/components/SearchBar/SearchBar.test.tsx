@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import SearchBar from './SearchBar';
 import { fireEvent, render, screen } from '@testing-library/react';
 

@@ -3,12 +3,12 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" },
-    { "path": "./tsconfig.test.json"}
+    { "path": "./tsconfig.test.json" }
   ],
   "compilerOptions": {
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx"
   },
-    "include": ["src"]
+  "include": ["src", "tsconfig.test.json", "jest.setup.ts", "jest.config.ts"]
 }

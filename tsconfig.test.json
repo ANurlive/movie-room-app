@@ -4,5 +4,5 @@
     "composite": true,
     "types": ["jest", "@testing-library/jest-dom"]
   },
-  "include": ["**/*.test.ts", "**/*.test.tsx", "/jest.setup.ts"]
+  "include": ["**/*.test.ts", "**/*.test.tsx", "jest.setup.ts"]
 }
