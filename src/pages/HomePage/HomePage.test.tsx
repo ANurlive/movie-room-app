@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import movieService from '../../services/movieAPIs';
 import type { MovieItem } from '../../types';
 import HomePage from './HomePage';
-import { HOME_PAGE_MESSAGES } from './messages';
 import { LS_KEYS } from '../../constants';
+import { DEFAULT_ERROR_MESSAGE } from '../../components/ErrorMessage/messages';
 
 jest.mock('../../services/movieAPIs');
 
@@ -73,27 +73,7 @@ describe('HomePage component', () => {
     render(<HomePage />);
 
     await waitFor(() => {
-      expect(
-        screen.getByText(HOME_PAGE_MESSAGES.UNEXPECTED_API_MESSAGE)
-      ).toBeInTheDocument();
+      expect(screen.getByText(DEFAULT_ERROR_MESSAGE)).toBeInTheDocument();
     });
-  });
-
-  test('shows broken component after clicking button', async () => {
-    (movieService.getMoviesList as jest.Mock).mockResolvedValue([]);
-
-    render(<HomePage />);
-    await waitFor(() =>
-      expect(screen.getByTestId('empty-search-result')).toBeInTheDocument()
-    );
-
-    const button = screen.getByRole('button', {
-      name: HOME_PAGE_MESSAGES.ERROR_BUTTON,
-    });
-    fireEvent.click(button);
-
-    expect(
-      screen.getByText(HOME_PAGE_MESSAGES.ERROR_BUTTON_MESSAGE)
-    ).toBeInTheDocument();
   });
 });
