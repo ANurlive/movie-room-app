@@ -36,7 +36,7 @@ describe('MovieList component', () => {
 
   test('renders a list of MovieCard component', () => {
     render(<MovieList movieList={mockList} />);
-    const movieCards = screen.getByTestId('movie-card');
+    const movieCards = screen.getAllByTestId('movie-card');
     expect(movieCards).toHaveLength(mockList.length);
   });
 });
