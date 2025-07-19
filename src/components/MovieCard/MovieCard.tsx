@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import type { MovieItem } from '../../types';
 
-const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+export const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 type Props = Omit<MovieItem, 'id'>;
 
