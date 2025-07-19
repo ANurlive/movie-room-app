@@ -1,10 +1,20 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import './index.css';
+import App from './App.tsx';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.tsx';
+import { ERROR_BOUNDARY_MESSAGES } from './components/ErrorBoundary/messages.ts';
 
-createRoot(document.getElementById('root')!).render(
+const container = document.getElementById('root');
+if (!container) {
+  throw new Error('Root container not found');
+}
+createRoot(container).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <ErrorBoundary
+      fallback={<p>{ERROR_BOUNDARY_MESSAGES.MESSAGE_TRY_AGAIN}</p>}
+    >
+      <App />
+    </ErrorBoundary>
+  </StrictMode>
+);
