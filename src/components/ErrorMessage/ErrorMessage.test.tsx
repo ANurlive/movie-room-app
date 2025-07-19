@@ -19,7 +19,7 @@ describe('ErrorMessage component', () => {
     {
       name: 'unknown numeric code',
       errorCode: 999,
-      expectedCodeText: '909',
+      expectedCodeText: '999',
       expectedMessage: DEFAULT_ERROR_MESSAGE,
     },
   ];
