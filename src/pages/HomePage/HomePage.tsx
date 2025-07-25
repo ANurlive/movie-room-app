@@ -1,16 +1,16 @@
 import { Component } from 'react';
-import Layout from '../../components/Layout/Layout';
-import SearchBar from '../../components/SearchBar/SearchBar';
-import MovieList from '../../components/MovieList/MovieList';
-import Loader from '../../components/Loader/Loader';
-import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import { LS_KEYS } from '../../constants';
 import type { MovieItem } from '../../types';
 import movieService from '../../services/movieAPIs';
 import { ApiError } from '../../helpers/handleAPIErrors';
-import Button from '../../components/Button/Button';
 import { HOME_PAGE_MESSAGES } from './messages';
-import BrokenComponent from '../../components/BrokenComponent/BrokenComponent';
+import Layout from '../../components/Layout';
+import SearchBar from '../../components/SearchBar';
+import Loader from '../../components/Loader';
+import ErrorMessage from '../../components/ErrorMessage';
+import MovieList from '../../components/MovieList';
+import BrokenComponent from '../../components/BrokenComponent';
+import Button from '../../components/Button';
 
 export default class HomePage extends Component {
   state = {

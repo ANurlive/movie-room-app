@@ -1,7 +1,7 @@
 import { Component } from 'react';
-import MovieCard from '../MovieCard/MovieCard';
-import EmptySearchResult from '../EmptySearchResult/EmptySearchResult';
 import type { MovieItem } from '../../types';
+import EmptySearchResult from '../EmptySearchResult';
+import MovieCard from '../MovieCard';
 
 export type Props = {
   movieList: MovieItem[];

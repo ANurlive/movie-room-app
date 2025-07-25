@@ -1,7 +1,6 @@
 import { Component } from 'react';
 
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement>;
-
 export default class Button extends Component<Props> {
   render() {
     const { children, className, ...rest } = this.props;

@@ -1,9 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import App from './App.tsx';
-import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.tsx';
-import { ERROR_BOUNDARY_MESSAGES } from './components/ErrorBoundary/messages.ts';
+import App from './App';
+import { ERROR_BOUNDARY_MESSAGES } from './components/ErrorBoundary/messages';
+import ErrorBoundary from './components/ErrorBoundary';
 
 const container = document.getElementById('root');
 if (!container) {

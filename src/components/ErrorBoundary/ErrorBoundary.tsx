@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ERROR_BOUNDARY_MESSAGES } from './messages';
-import Button from '../Button/Button';
+import Button from '../Button';
 
 type Props = {
   children: React.ReactNode;

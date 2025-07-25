@@ -1,6 +1,6 @@
 import { Component } from 'react';
-import Button from '../Button/Button';
 import { SEARCH_MESSAGES } from './messages';
+import Button from '../Button';
 
 type SearchBarProps = {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
