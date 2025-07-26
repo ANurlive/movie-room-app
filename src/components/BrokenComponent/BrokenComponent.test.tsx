@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import BrokenComponent from './BrokenComponent';
+import BrokenComponent from '.';
 
 describe('BrokenComponent', () => {
   const originalError = console.error;

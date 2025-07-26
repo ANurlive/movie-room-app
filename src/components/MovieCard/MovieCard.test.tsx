@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import type { MovieItem } from '../../types';
-import MovieCard, { IMAGE_BASE_URL } from './MovieCard';
+import MovieCard from '.';
+import { IMAGE_BASE_URL } from './MovieCard';
 
 const mockMovie: Omit<MovieItem, 'id'> = {
   posterPath: '/test.jpg',

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import ErrorMessage from './ErrorMessage';
+import ErrorMessage from '.';
 import { DEFAULT_ERROR_MESSAGE, ERROR_MESSAGES } from './messages';
 
 describe('ErrorMessage component', () => {

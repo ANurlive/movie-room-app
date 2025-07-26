@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import movieService from '../../services/movieAPIs';
 import type { MovieItem } from '../../types';
-import HomePage from './HomePage';
+import HomePage from '.';
 import { LS_KEYS } from '../../constants';
 import { DEFAULT_ERROR_MESSAGE } from '../../components/ErrorMessage/messages';
 

@@ -1,13 +1,12 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 
 type Props = {
   errorMessage: string;
 };
-export default class BrokenComponent extends Component<Props> {
-  componentDidMount(): void {
-    throw new Error(this.props.errorMessage);
-  }
-  render() {
-    return null;
-  }
+
+export default function BrokenComponent({ errorMessage }: Props) {
+  useEffect(() => {
+    throw new Error(errorMessage);
+  }, [errorMessage]);
+  return null;
 }

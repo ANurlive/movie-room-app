@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import ErrorBoundary from './ErrorBoundary';
-import BrokenComponent from '../BrokenComponent/BrokenComponent';
+import ErrorBoundary from '.';
 import { ERROR_BOUNDARY_MESSAGES } from './messages';
+import BrokenComponent from '../BrokenComponent';
 
 const originalError = console.error;
 beforeAll(() => {

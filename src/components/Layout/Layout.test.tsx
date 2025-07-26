@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Layout from './Layout';
+import Layout from '.';
 import { LAYOUT_TEXT } from './messages';
 
 describe('Layout component test', () => {
