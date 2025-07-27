@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import ErrorBoundary from '.';
 import { ERROR_BOUNDARY_MESSAGES } from './messages';
-import BrokenComponent from '../BrokenComponent';
+import ErrorButton from '../ErrorButton';
+import userEvent from '@testing-library/user-event';
 
 const originalError = console.error;
 beforeAll(() => {
@@ -21,18 +22,26 @@ describe('ErrorBoundary component', () => {
     );
   };
 
-  test('It catches and handles JavaScript errors in child components', () => {
-    setup(<BrokenComponent errorMessage="test error" />);
+  test('It catches and handles JavaScript errors in child components', async () => {
+    setup(<ErrorButton />);
+
+    const button = screen.getByRole('button', { name: /error/i });
+    await userEvent.click(button);
+
     expect(
       screen.getByText(ERROR_BOUNDARY_MESSAGES.DEFAULT_ERROR_MESSAGE)
     ).toBeInTheDocument();
+
     expect(console.error).toHaveBeenCalled();
   });
 
-  test('It should render fallback UI and button', () => {
+  test('It should render fallback UI and button', async () => {
     const fallback = <p>Oops!</p>;
-    setup(<BrokenComponent errorMessage="test error" />, fallback);
+    setup(<ErrorButton />, fallback);
+
+    const button = screen.getByRole('button', { name: /error/i });
+    await userEvent.click(button);
+
     expect(screen.getByText('Oops!')).toBeInTheDocument();
-    expect(screen.getByRole('button')).toBeInTheDocument();
   });
 });
