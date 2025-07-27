@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { HOME_PAGE_MESSAGES } from './messages';
 import Layout from '../../components/Layout';
 import SearchBar from '../../components/SearchBar';
@@ -9,16 +8,18 @@ import useMovieLoader from './useMovieLoader';
 import ErrorButton from '../../components/ErrorButton';
 
 export default function HomePage() {
-  const { inputValue, setInputValue, movieList, loading, error, loadContent } =
-    useMovieLoader();
-
-  useEffect(() => {
-    loadContent();
-  }, [loadContent]);
+  const {
+    inputValue,
+    setInputValue,
+    movieList,
+    loading,
+    error,
+    setSearchValue,
+  } = useMovieLoader();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    loadContent(inputValue);
+    setSearchValue(inputValue);
   };
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { MovieItem } from '../../types';
 import movieService from '../../services/movieAPIs';
 import { LS_KEYS } from '../../constants';
@@ -13,18 +13,21 @@ type UseMovieLoaderResult = {
   movieList: MovieItem[];
   loading: boolean;
   error: ErrorType;
-  loadContent: (searchValue?: string) => void;
+  setSearchValue: (searchValue: string) => void;
 };
 
 export default function useMovieLoader(): UseMovieLoaderResult {
   const [inputValue, setInputValue] = useState<string>(
     localStorage.getItem(LS_KEYS.INPUT_VALUE) || ''
   );
+  const [searchValue, setSearchValue] = useState<string>(
+    localStorage.getItem(LS_KEYS.INPUT_VALUE) || ''
+  );
   const [movieList, setMovieList] = useState<MovieItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<ErrorType>(null);
 
-  const loadContent = useCallback(async (searchValue?: string) => {
+  const loadContent = useCallback(async () => {
     setLoading(true);
     setError(null);
     let movieList: MovieItem[];
@@ -39,19 +42,22 @@ export default function useMovieLoader(): UseMovieLoaderResult {
       }
 
       setMovieList(movieList);
-      setLoading(false);
     } catch (error) {
       if (error instanceof ApiError) {
         console.log(error.serverMessage);
-        setLoading(false);
         setError(error.status);
       } else {
         console.log(HOME_PAGE_MESSAGES.UNEXPECTED_API_MESSAGE);
-        setLoading(false);
         setError('unexpected');
       }
+    } finally {
+      setLoading(false);
     }
-  }, []);
+  }, [searchValue]);
+
+  useEffect(() => {
+    loadContent();
+  }, [loadContent]);
 
   return {
     inputValue,
@@ -59,6 +65,6 @@ export default function useMovieLoader(): UseMovieLoaderResult {
     movieList,
     loading,
     error,
-    loadContent,
+    setSearchValue,
   };
 }
