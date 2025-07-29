@@ -6,6 +6,7 @@ import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
 import movieService from './services/movieAPIs';
 import Details from './pages/Details';
+import routeLoadersLogic from './helpers/routeLoadersLogic';
 
 const router = createBrowserRouter([
   {
@@ -17,12 +18,7 @@ const router = createBrowserRouter([
         path: '',
         Component: HomePage,
         loader: movieService.searchMoviesLoader,
-        shouldRevalidate: ({ currentUrl, nextUrl }) => {
-          const isNavigatingToDetails = nextUrl.pathname.match(/\/\d+$/);
-          const searchChanged = currentUrl.search !== nextUrl.search;
-
-          return searchChanged && !isNavigatingToDetails;
-        },
+        shouldRevalidate: routeLoadersLogic.revalidate,
         children: [
           {
             path: ':id',
@@ -35,12 +31,7 @@ const router = createBrowserRouter([
         path: 'search',
         Component: HomePage,
         loader: movieService.searchMoviesLoader,
-        shouldRevalidate: ({ currentUrl, nextUrl }) => {
-          const isNavigatingToDetails = nextUrl.pathname.match(/\/\d+$/);
-          const searchChanged = currentUrl.search !== nextUrl.search;
-
-          return searchChanged && !isNavigatingToDetails;
-        },
+        shouldRevalidate: routeLoadersLogic.revalidate,
         children: [
           {
             path: ':id',

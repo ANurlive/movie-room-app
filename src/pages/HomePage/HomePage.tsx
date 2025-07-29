@@ -9,19 +9,25 @@ import {
   useLoaderData,
   useLocation,
   useNavigate,
+  type Location,
 } from 'react-router-dom';
 import type { LoaderData } from '../../types';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 
 export default function HomePage() {
   const { movies, page, totalPages } = useLoaderData() as LoaderData;
   const navigate = useNavigate();
   const location = useLocation();
   const isDetailsOpen = /^\/\d+$/.test(location.pathname);
-
+  const lastPageLocation = useRef<Location>(location);
+  const scrollRef = useRef<number | null>(null);
   const { inputValue, setInputValue, saveValueToLS } = useMovieLoader();
-  useEffect(() => console.log('mount'), []);
-  useEffect(() => console.log('update'));
+
+  useEffect(() => {
+    if (!isDetailsOpen) {
+      lastPageLocation.current = location;
+    }
+  }, [isDetailsOpen, location]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -36,8 +42,17 @@ export default function HomePage() {
 
   const handleCardClick = (id: number) => {
     console.log(id);
+    scrollRef.current = window.scrollY;
     navigate(`/${id}`);
   };
+
+  useLayoutEffect(() => {
+    if (scrollRef.current !== null) {
+      requestAnimationFrame(() => {
+        window.scrollTo(0, scrollRef.current as number);
+      });
+    }
+  }, []);
 
   return (
     <div className="flex flex-col gap-4 w-full items-center">
@@ -62,8 +77,8 @@ export default function HomePage() {
         </section>
 
         {isDetailsOpen && (
-          <section className="w-1/2">
-            <Outlet />
+          <section className="w-1/2 relative">
+            <Outlet context={{ lastLocation: lastPageLocation }} />
           </section>
         )}
       </div>

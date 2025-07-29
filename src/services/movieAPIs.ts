@@ -2,6 +2,7 @@ import { type LoaderFunctionArgs, defer } from 'react-router-dom';
 import getShortMovieList from '../helpers/getShortMovieList';
 import handleApiErrors from '../helpers/handleAPIErrors';
 import type { LoaderData, MoviesGetResponse, ServerMovieType } from '../types';
+import { LS_KEYS } from '../constants';
 
 const API_URL = 'https://api.themoviedb.org/3';
 const API_TOKEN =
@@ -53,7 +54,10 @@ const movieService = {
     request,
   }: LoaderFunctionArgs): Promise<LoaderData> => {
     const url = new URL(request.url);
-    const searchTerm = url.searchParams.get('query') || '';
+    const searchTerm =
+      url.searchParams.get('query') ||
+      localStorage.getItem(LS_KEYS.INPUT_VALUE) ||
+      '';
     const page = Number(url.searchParams.get('page')) || 1;
 
     try {
