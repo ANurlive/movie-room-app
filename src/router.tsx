@@ -19,20 +19,30 @@ const router = createBrowserRouter([
         loader: movieService.searchMoviesLoader,
       },
       {
-        path: '/search',
+        path: '',
+        Component: HomePage,
+        loader: movieService.searchMoviesLoader,
         children: [
           {
-            index: true,
-            Component: HomePage,
-            loader: movieService.searchMoviesLoader,
+            path: ':id',
+            Component: Details,
+            loader: movieService.getDetailsLoader,
           },
         ],
       },
       {
-        path: ':id',
-        Component: Details,
-        loader: movieService.getDetailsLoader,
+        path: '/search',
+        Component: HomePage,
+        loader: movieService.searchMoviesLoader,
+        children: [
+          {
+            path: ':id',
+            Component: Details,
+            loader: movieService.getDetailsLoader,
+          },
+        ],
       },
+
       {
         path: 'about',
         Component: AboutPage,

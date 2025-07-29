@@ -92,7 +92,7 @@ const movieService = {
       posterPath: poster_path,
       releaseDate: release_date,
     };
-
+    console.log(movie);
     return defer({ movie });
   },
 };

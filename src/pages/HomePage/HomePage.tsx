@@ -4,12 +4,20 @@ import MovieList from '../../components/MovieList';
 import useMovieLoader from './useLocalStorage';
 import ErrorButton from '../../components/ErrorButton';
 import Pagination from '../../components/Pagination';
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import {
+  Outlet,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import type { LoaderData } from '../../types';
 
 export default function HomePage() {
-  const { movies, page, totalPages } = useLoaderData<LoaderData>();
+  const { movies, page, totalPages } = useLoaderData() as LoaderData;
   const navigate = useNavigate();
+  const location = useLocation();
+  const isDetailsOpen = /^\/\d+$/.test(location.pathname);
+
   const { inputValue, setInputValue, saveValueToLS } = useMovieLoader();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -37,13 +45,25 @@ export default function HomePage() {
         handleSubmit={handleSubmit}
         inputValue={inputValue}
       />
+      <div className="flex gap-6">
+        <section className={`${isDetailsOpen ? 'w-1/2' : 'w-full'}`}>
+          <MovieList movieList={movies} handleCardClick={handleCardClick} />
+          {movies.length > 0 && (
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              className=""
+            />
+          )}
+          <ErrorButton className="flex justify-end" />
+        </section>
 
-      <MovieList movieList={movies} handleCardClick={handleCardClick} />
-      {movies.length > 0 && (
-        <Pagination currentPage={page} totalPages={totalPages} className="" />
-      )}
-
-      <ErrorButton className="flex justify-end" />
+        {isDetailsOpen && (
+          <section className="w-1/2">
+            <Outlet />
+          </section>
+        )}
+      </div>
     </div>
   );
 }
