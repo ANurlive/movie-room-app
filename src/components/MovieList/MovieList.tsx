@@ -4,9 +4,10 @@ import MovieCard from '../MovieCard';
 
 export type Props = {
   movieList: MovieItem[];
+  handleCardClick: (id: number) => void;
 };
 
-export default function MovieList({ movieList }: Props) {
+export default function MovieList({ movieList, handleCardClick }: Props) {
   if (movieList.length === 0) {
     return <EmptySearchResult />;
   }
@@ -15,7 +16,7 @@ export default function MovieList({ movieList }: Props) {
       {movieList &&
         movieList.map(({ id, ...rest }) => {
           return (
-            <li key={id}>
+            <li key={id} onClick={() => handleCardClick(id)}>
               <MovieCard {...rest} />
             </li>
           );

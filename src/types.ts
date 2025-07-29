@@ -29,3 +29,10 @@ export type MoviesGetResponse = {
   total_pages: number;
   total_results: number;
 };
+
+export type LoaderData = {
+  movies: MovieItem[];
+  page: number;
+  totalPages: number;
+  searchTerm: string;
+};

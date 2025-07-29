@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import ErrorButton from './ErrorButton';
+import ErrorButton from '.';
 import { ERROR_BUTTON_MESSAGES } from './messages';
 
 describe('ErrorButton', () => {

@@ -1,45 +1,38 @@
-import React, { Component } from 'react';
+import {
+  useRouteError,
+  isRouteErrorResponse,
+  useNavigate,
+} from 'react-router-dom';
+import ErrorMessage from '../ErrorMessage';
+import { ApiError } from '../../helpers/handleAPIErrors';
 import { ERROR_BOUNDARY_MESSAGES } from './messages';
 import Button from '../Button';
 
-type Props = {
-  children: React.ReactNode;
-  fallback?: React.ReactNode;
-};
-
-type BoundaryState = {
-  hasError: boolean;
-};
-export default class ErrorBoundary extends Component<Props, BoundaryState> {
-  state: BoundaryState = {
-    hasError: false,
+function FallbackUI() {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate('/');
   };
+  return (
+    <div className="w-full h-screen flex flex-col gap-6 justify-center items-center ">
+      <p>{ERROR_BOUNDARY_MESSAGES.DEFAULT_ERROR_MESSAGE}</p>
+      <Button onClick={handleClick}>{ERROR_BOUNDARY_MESSAGES.BUTTON}</Button>
+    </div>
+  );
+}
 
-  static getDerivedStateFromError(): BoundaryState {
-    return { hasError: true };
+export default function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div className="p-4">
+        <ErrorMessage errorCode={error.status} />
+      </div>
+    );
   }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
-    console.log(ERROR_BOUNDARY_MESSAGES.LOG, error, errorInfo);
+  if (error instanceof ApiError) {
+    return <ErrorMessage errorCode={error.status} />;
   }
-
-  handleClick = () => {
-    this.setState({ hasError: false });
-  };
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="w-full h-screen flex flex-col gap-6 justify-center items-center ">
-          {this.props.fallback ?? (
-            <p>{ERROR_BOUNDARY_MESSAGES.DEFAULT_ERROR_MESSAGE}</p>
-          )}
-          <Button onClick={this.handleClick}>
-            {ERROR_BOUNDARY_MESSAGES.BUTTON}
-          </Button>
-        </div>
-      );
-    }
-
-    return this.props.children;
-  }
+  return <FallbackUI />;
 }

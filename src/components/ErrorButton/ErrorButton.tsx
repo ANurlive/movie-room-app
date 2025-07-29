@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { ERROR_BUTTON_MESSAGES } from './messages';
 import Button from '../Button';
 
-export default function ErrorButton() {
+type Props = {
+  className?: string;
+};
+export default function ErrorButton({ className }: Props) {
   const [isBroken, setIsBroken] = useState<boolean>(false);
 
   const handleClick = () => {
@@ -14,7 +17,11 @@ export default function ErrorButton() {
   }, [isBroken]);
 
   return (
-    <Button onClick={handleClick} data-action="throw-error">
+    <Button
+      onClick={handleClick}
+      data-action="throw-error"
+      className={className}
+    >
       {ERROR_BUTTON_MESSAGES.BUTTON_NAME}
     </Button>
   );

@@ -3,23 +3,26 @@ import Layout from '.';
 import { LAYOUT_TEXT } from './messages';
 
 describe('Layout component test', () => {
-  const children = <button>test</button>;
+  jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    Outlet: () => <button>test</button>,
+  }));
 
   beforeEach(() => {
-    render(<Layout>{children}</Layout>);
+    render(<Layout />);
   });
 
-  test('renders header with correct title', () => {
+  it('renders header with correct title', () => {
     const title = screen.getByRole('heading', { level: 1 });
     expect(title).toBeInTheDocument();
     expect(title).toHaveTextContent(LAYOUT_TEXT.TITLE);
   });
 
-  test('renders footer with correct text', () => {
+  it('renders footer with correct text', () => {
     expect(screen.getByText(LAYOUT_TEXT.FOOTER)).toBeInTheDocument();
   });
 
-  test('renders its children inside <main>', () => {
+  it('renders routed content using Outlet', () => {
     expect(screen.getByRole('button', { name: 'test' })).toBeInTheDocument();
   });
 });

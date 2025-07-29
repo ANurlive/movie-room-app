@@ -1,79 +1,54 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import movieService from '../../services/movieAPIs';
-import type { MovieItem } from '../../types';
-import HomePage from '.';
-import { LS_KEYS } from '../../constants';
-import { DEFAULT_ERROR_MESSAGE } from '../../components/ErrorMessage/messages';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter, useNavigate } from 'react-router-dom';
+import HomePage from './HomePage';
+import { HOME_PAGE_MESSAGES } from './messages';
 
-jest.mock('../../services/movieAPIs');
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLoaderData: () => ({
+    movies: [{ id: 1, title: 'Inception' }],
+    page: 1,
+    totalPages: 10,
+  }),
+  useNavigate: jest.fn(),
+}));
 
-const mockList: MovieItem[] = [
-  {
-    id: 1,
-    title: 'The happiness',
-    overview: 'The happiness overview',
-    releaseDate: '2025-07-19',
-    posterPath: '/poster.jpg',
-  },
-];
+jest.mock('./useLocalStorage', () => ({
+  __esModule: true,
+  default: () => ({
+    inputValue: 'batman',
+    setInputValue: jest.fn(),
+    saveValueToLS: jest.fn(),
+  }),
+}));
 
-describe('HomePage component', () => {
-  beforeEach(() => {
-    localStorage.clear();
-    jest.clearAllMocks();
+describe('HomePage', () => {
+  it('renders heading and SearchBar', () => {
+    render(<HomePage />, { wrapper: MemoryRouter });
+
+    expect(
+      screen.getByRole('heading', { name: HOME_PAGE_MESSAGES.HEADING })
+    ).toBeInTheDocument();
+
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
+    expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
-  test('renders movie list on successful fetch with empty input', async () => {
-    (movieService.getMoviesList as jest.Mock).mockResolvedValue(mockList);
+  it('calls navigate with query when form is submitted', () => {
+    const mockNavigate = useNavigate() as jest.Mock;
+    render(<HomePage />, { wrapper: MemoryRouter });
 
-    render(<HomePage />);
-
-    expect(screen.getByRole('textbox')).toHaveValue('');
-
-    expect(screen.getByTestId('loader')).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(screen.getByText('The happiness')).toBeInTheDocument();
-    });
-  });
-
-  test('performs search and updates localStorage', async () => {
-    (movieService.searchMovie as jest.Mock).mockResolvedValue(mockList);
-
-    render(<HomePage />);
-
-    const input = screen.getByRole('textbox');
-    const form = input.closest('form');
-
-    if (!form) {
-      throw new Error('Form element not found');
-    }
-    const rawInput = '      The happiness    ';
-    fireEvent.change(input, {
-      target: { value: rawInput }, //to test trim()
-    });
-
-    await waitFor(() => {
-      expect(input).toHaveValue(rawInput);
-    });
+    const form = screen.getByRole('form') || screen.getByTestId('search-form');
 
     fireEvent.submit(form);
 
-    await waitFor(() => {
-      expect(movieService.searchMovie).toHaveBeenCalledWith('The happiness');
-      expect(screen.getByText('The happiness')).toBeInTheDocument();
-      expect(localStorage.getItem(LS_KEYS.INPUT_VALUE)).toBe('The happiness');
-    });
+    expect(mockNavigate).toHaveBeenCalledWith('/search?query=batman');
   });
 
-  test('renders error message on API error', async () => {
-    const error = new Error('Server down');
-    (movieService.getMoviesList as jest.Mock).mockRejectedValue(error);
+  it('renders MovieList and Pagination when movies are available', () => {
+    render(<HomePage />, { wrapper: MemoryRouter });
 
-    render(<HomePage />);
-
-    await waitFor(() => {
-      expect(screen.getByText(DEFAULT_ERROR_MESSAGE)).toBeInTheDocument();
-    });
+    expect(screen.getByText('Inception')).toBeInTheDocument();
+    expect(screen.getByText('1')).toBeInTheDocument();
   });
 });
