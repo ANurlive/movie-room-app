@@ -11,6 +11,7 @@ import {
   useNavigate,
 } from 'react-router-dom';
 import type { LoaderData } from '../../types';
+import { useEffect } from 'react';
 
 export default function HomePage() {
   const { movies, page, totalPages } = useLoaderData() as LoaderData;
@@ -19,6 +20,8 @@ export default function HomePage() {
   const isDetailsOpen = /^\/\d+$/.test(location.pathname);
 
   const { inputValue, setInputValue, saveValueToLS } = useMovieLoader();
+  useEffect(() => console.log('mount'), []);
+  useEffect(() => console.log('update'));
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

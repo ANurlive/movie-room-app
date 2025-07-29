@@ -14,14 +14,15 @@ const router = createBrowserRouter([
     ErrorBoundary: ErrorBoundary,
     children: [
       {
-        index: true,
-        Component: HomePage,
-        loader: movieService.searchMoviesLoader,
-      },
-      {
         path: '',
         Component: HomePage,
         loader: movieService.searchMoviesLoader,
+        shouldRevalidate: ({ currentUrl, nextUrl }) => {
+          const isNavigatingToDetails = nextUrl.pathname.match(/\/\d+$/);
+          const searchChanged = currentUrl.search !== nextUrl.search;
+
+          return searchChanged && !isNavigatingToDetails;
+        },
         children: [
           {
             path: ':id',
@@ -31,9 +32,15 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: '/search',
+        path: 'search',
         Component: HomePage,
         loader: movieService.searchMoviesLoader,
+        shouldRevalidate: ({ currentUrl, nextUrl }) => {
+          const isNavigatingToDetails = nextUrl.pathname.match(/\/\d+$/);
+          const searchChanged = currentUrl.search !== nextUrl.search;
+
+          return searchChanged && !isNavigatingToDetails;
+        },
         children: [
           {
             path: ':id',
