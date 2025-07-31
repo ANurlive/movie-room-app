@@ -7,7 +7,8 @@ import NotFoundPage from './pages/NotFoundPage';
 import Details from './pages/Details';
 import routeLoadersLogic from './helpers/routeLoadersLogic';
 import { PAGES } from './constants/pages';
-import movieService from './services/movie-service/movieAPIs';
+import homePageLoader from './loaders/homePageLoader';
+import detailsLoader from './loaders/detailsLoader';
 
 const router = createBrowserRouter([
   {
@@ -18,13 +19,13 @@ const router = createBrowserRouter([
       {
         path: PAGES.HOME,
         Component: HomePage,
-        loader: movieService.searchMoviesLoader,
+        loader: homePageLoader,
         shouldRevalidate: routeLoadersLogic.revalidate,
         children: [
           {
             path: PAGES.DETAILS,
             Component: Details,
-            loader: movieService.getDetailsLoader,
+            loader: detailsLoader,
           },
         ],
       },
