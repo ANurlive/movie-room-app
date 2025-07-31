@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '../Button/Button';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
 type Props = {
   currentPage: number;
@@ -14,27 +14,25 @@ export default function Pagination({
 }: Props): React.ReactElement {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const location = useLocation();
 
-  const handlePageTurn = (direction: 'prev' | 'next') => {
-    const newPage = direction === 'next' ? currentPage + 1 : currentPage - 1;
+  const handlePageTurn = (pageStep: -1 | 1) => () => {
+    const newPage = currentPage + pageStep;
+
     const newParams = new URLSearchParams(searchParams);
     newParams.set('page', String(newPage));
-    navigate(`/?${newParams.toString()}`);
+
+    const currentPathname = location.pathname;
+    navigate(`${currentPathname}?${newParams.toString()}`);
   };
 
   return (
     <div className={`flex gap-4 ${className ?? ''}`}>
-      <Button
-        onClick={() => handlePageTurn('prev')}
-        disabled={currentPage === 1}
-      >
+      <Button onClick={handlePageTurn(-1)} disabled={currentPage === 1}>
         Prev
       </Button>
-
-      <Button
-        onClick={() => handlePageTurn('next')}
-        disabled={currentPage === totalPages}
-      >
+      <span>page</span>
+      <Button onClick={handlePageTurn(1)} disabled={currentPage === totalPages}>
         Next
       </Button>
     </div>

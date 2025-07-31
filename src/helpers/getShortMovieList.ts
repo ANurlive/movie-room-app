@@ -1,4 +1,4 @@
-import type { MovieItem, ServerMovieType } from '../types';
+import type { MovieItem, ServerMovieType } from '../types/types';
 
 const getShortMovieList = (list: ServerMovieType[]) => {
   return list.map(

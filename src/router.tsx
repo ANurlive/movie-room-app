@@ -4,49 +4,36 @@ import ErrorBoundary from './components/ErrorBoundary';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
-import movieService from './services/movieAPIs';
 import Details from './pages/Details';
 import routeLoadersLogic from './helpers/routeLoadersLogic';
+import { PAGES } from './constants/pages';
+import movieService from './services/movie-service/movieAPIs';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: PAGES.HOME,
     Component: Layout,
     ErrorBoundary: ErrorBoundary,
     children: [
       {
-        path: '',
+        path: PAGES.HOME,
         Component: HomePage,
         loader: movieService.searchMoviesLoader,
         shouldRevalidate: routeLoadersLogic.revalidate,
         children: [
           {
-            path: ':id',
+            path: PAGES.DETAILS,
             Component: Details,
             loader: movieService.getDetailsLoader,
           },
         ],
       },
       {
-        path: 'search',
-        Component: HomePage,
-        loader: movieService.searchMoviesLoader,
-        shouldRevalidate: routeLoadersLogic.revalidate,
-        children: [
-          {
-            path: ':id',
-            Component: Details,
-            loader: movieService.getDetailsLoader,
-          },
-        ],
-      },
-
-      {
-        path: 'about',
+        path: PAGES.ABOUT,
         Component: AboutPage,
       },
       {
-        path: '*',
+        path: PAGES.NOTFOUND,
         Component: NotFoundPage,
       },
     ],

@@ -1,7 +1,7 @@
 import movieService from './movieAPIs';
 import handleApiErrors from '../helpers/handleAPIErrors';
 import getShortMovieList from '../helpers/getShortMovieList';
-import type { MovieItem } from '../types';
+import type { MovieItem } from '../types/types';
 
 global.fetch = jest.fn();
 jest.mock('../helpers/handleAPIErrors');

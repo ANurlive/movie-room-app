@@ -1,4 +1,4 @@
-import type { MovieItem } from '../../types';
+import type { MovieItem } from '../../types/types';
 import EmptySearchResult from '../EmptySearchResult';
 import MovieCard from '../MovieCard';
 

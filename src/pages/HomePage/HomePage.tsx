@@ -1,58 +1,42 @@
 import { HOME_PAGE_MESSAGES } from './messages';
 import SearchBar from '../../components/SearchBar';
 import MovieList from '../../components/MovieList';
-import useMovieLoader from './useLocalStorage';
 import ErrorButton from '../../components/ErrorButton';
 import Pagination from '../../components/Pagination';
 import {
   Outlet,
   useLoaderData,
-  useLocation,
   useNavigate,
-  type Location,
+  useSearchParams,
 } from 'react-router-dom';
-import type { LoaderData } from '../../types';
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import type { LoaderData } from '../../types/types';
+import useLocalStorage from './useLocalStorage';
 
 export default function HomePage() {
-  const { movies, page, totalPages } = useLoaderData() as LoaderData;
+  const { movies, page, totalPages } = useLoaderData<LoaderData>();
   const navigate = useNavigate();
-  const location = useLocation();
-  const isDetailsOpen = /^\/\d+$/.test(location.pathname);
-  const lastPageLocation = useRef<Location>(location);
-  const scrollRef = useRef<number | null>(null);
-  const { inputValue, setInputValue, saveValueToLS } = useMovieLoader();
-
-  useEffect(() => {
-    if (!isDetailsOpen) {
-      lastPageLocation.current = location;
-    }
-  }, [isDetailsOpen, location]);
+  const { inputValue, setInputValue, saveValueToLS } = useLocalStorage();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isDetailsOpen = /^\/\d+/.test(location.pathname);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    saveValueToLS(inputValue);
-    navigate(`/search?query=${inputValue.trim()}`);
+    const trimmedValue = inputValue.trim();
+    saveValueToLS(trimmedValue);
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('query', trimmedValue.toString());
+    setSearchParams(newParams);
+    // navigate(`/?query=${trimmedValue}`);
   };
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setInputValue(value);
+    setInputValue(event.target.value);
   };
 
   const handleCardClick = (id: number) => {
-    console.log(id);
-    scrollRef.current = window.scrollY;
-    navigate(`/${id}`);
+    const params = new URLSearchParams(searchParams);
+    navigate(`/${id}?${params.toString()}`);
   };
-
-  useLayoutEffect(() => {
-    if (scrollRef.current !== null) {
-      requestAnimationFrame(() => {
-        window.scrollTo(0, scrollRef.current as number);
-      });
-    }
-  }, []);
 
   return (
     <div className="flex flex-col gap-4 w-full items-center">
@@ -78,7 +62,7 @@ export default function HomePage() {
 
         {isDetailsOpen && (
           <section className="w-1/2 relative">
-            <Outlet context={{ lastLocation: lastPageLocation }} />
+            <Outlet />
           </section>
         )}
       </div>

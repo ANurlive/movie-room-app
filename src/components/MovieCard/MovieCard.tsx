@@ -1,11 +1,8 @@
+import type { MovieItem } from '../../types/types';
+
 export const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
-type Props = {
-  title: string;
-  overview: string;
-  posterPath: string;
-  releaseDate: string;
-};
+type Props = Omit<MovieItem, 'id'>;
 
 export default function MovieCard({
   posterPath,

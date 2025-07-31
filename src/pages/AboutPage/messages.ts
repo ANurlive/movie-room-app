@@ -1,5 +1,5 @@
-export const ABOUT_PAGE_MESSAGES = {
+export const messages = {
   AUTHOR_TEXT:
     'Hi, my name is Assel. I’m a junior developer currently taking a React course at RS School.',
-  LINK: 'https://github.com/rolling-scopes-school/tasks/tree/master/react',
+  LINK_TEXT: 'Visit RS School React Course',
 };

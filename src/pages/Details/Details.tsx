@@ -1,44 +1,25 @@
-import React, { Suspense } from 'react';
 import MovieCard from '../../components/MovieCard';
-import {
-  Await,
-  useLoaderData,
-  useNavigate,
-  useOutletContext,
-  type Location,
-} from 'react-router-dom';
-import Loader from '../../components/Loader';
-import type { MovieItem } from '../../types';
+import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
-
-type ContextType = {
-  lastLocation: React.RefObject<Location>;
-};
+import type { MovieItem } from '../../types/types';
+import { PAGES } from '../../constants/pages';
 
 export default function Details() {
-  const loaderData = useLoaderData() as { movie: Promise<MovieItem> };
-  const { lastLocation } = useOutletContext<ContextType>();
+  const movie = useLoaderData<MovieItem>();
+  const location = useLocation();
   const navigate = useNavigate();
 
   const handleClose = () => {
-    const location = lastLocation.current;
-    navigate(location.pathname + location.search, { replace: true });
-    requestAnimationFrame(() => {
-      window.scrollTo(0, scrollY);
-    });
+    navigate(`${PAGES.HOME}${location.search}`);
   };
   return (
-    <Suspense fallback={<Loader />}>
-      <Await resolve={loaderData.movie}>
-        {(movie) => (
-          <div className="flex flex-col sticky top-6">
-            <MovieCard {...movie} />
-            <Button onClick={handleClose} className="ml-auto mt-6">
-              Close
-            </Button>
-          </div>
-        )}
-      </Await>
-    </Suspense>
+    <>
+      <div className="flex flex-col sticky top-6">
+        <MovieCard {...movie} />
+        <Button onClick={handleClose} className="ml-auto mt-6">
+          Close
+        </Button>
+      </div>
+    </>
   );
 }

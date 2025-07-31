@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import type { MovieItem } from '../../types';
+import type { MovieItem } from '../../types/types';
 import MovieList from '.';
 
 jest.mock('../MovieCard/MovieCard', () => ({

@@ -1,9 +1,6 @@
-@import './myNormalize.css';
+@import './styles/myNormalize.css';
 @import 'tailwindcss';
 
-/* @theme {
-  --color-logo: #e50914;
-} */
 :root {
   font-family: 'Roboto', Times, serif;
   font-size: 14px;

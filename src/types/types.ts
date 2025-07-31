@@ -36,3 +36,7 @@ export type LoaderData = {
   totalPages: number;
   searchTerm: string;
 };
+
+export type getDetailsResponse = {
+  name: string;
+};

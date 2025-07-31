@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LS_KEYS } from '../../constants';
+import { LS_KEYS } from '../../constants/shared';
 
 type Result = {
   inputValue: string;
