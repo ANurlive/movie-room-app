@@ -27,11 +27,13 @@ export default function Pagination({
   };
 
   return (
-    <div className={`flex gap-4 ${className ?? ''}`}>
+    <div className={`flex gap-4 ${className ?? ''} text-xl`}>
       <Button onClick={handlePageTurn(-1)} disabled={currentPage === 1}>
         Prev
       </Button>
-      <span>page</span>
+      <span>
+        Page {currentPage} of {totalPages}
+      </span>
       <Button onClick={handlePageTurn(1)} disabled={currentPage === totalPages}>
         Next
       </Button>

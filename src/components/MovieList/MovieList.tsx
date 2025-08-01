@@ -4,20 +4,19 @@ import MovieCard from '../MovieCard';
 
 export type Props = {
   movieList: MovieItem[];
-  handleCardClick: (id: number) => void;
 };
 
-export default function MovieList({ movieList, handleCardClick }: Props) {
+export default function MovieList({ movieList }: Props) {
   if (movieList.length === 0) {
     return <EmptySearchResult />;
   }
   return (
     <ul className="flex flex-col gap-4 mb-6">
       {movieList &&
-        movieList.map(({ id, ...rest }) => {
+        movieList.map((movie) => {
           return (
-            <li key={id} onClick={() => handleCardClick(id)}>
-              <MovieCard {...rest} />
+            <li key={movie.id}>
+              <MovieCard {...movie} />
             </li>
           );
         })}

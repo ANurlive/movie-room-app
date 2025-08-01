@@ -3,18 +3,13 @@ import SearchBar from '../../components/SearchBar';
 import MovieList from '../../components/MovieList';
 import ErrorButton from '../../components/ErrorButton';
 import Pagination from '../../components/Pagination';
-import {
-  Outlet,
-  useLoaderData,
-  useNavigate,
-  useSearchParams,
-} from 'react-router-dom';
+import { Outlet, useLoaderData, useSearchParams } from 'react-router-dom';
 import type { LoaderData } from '../../types/types';
 import useLocalStorage from './useLocalStorage';
+import Flyout from '../../components/Flyout';
 
 export default function HomePage() {
   const { movies, page, totalPages } = useLoaderData<LoaderData>();
-  const navigate = useNavigate();
   const { inputValue, setInputValue, saveValueToLS } = useLocalStorage();
   const [searchParams, setSearchParams] = useSearchParams();
   const isDetailsOpen = /^\/\d+/.test(location.pathname);
@@ -26,16 +21,10 @@ export default function HomePage() {
     const newParams = new URLSearchParams(searchParams);
     newParams.set('query', trimmedValue.toString());
     setSearchParams(newParams);
-    // navigate(`/?query=${trimmedValue}`);
   };
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
-  };
-
-  const handleCardClick = (id: number) => {
-    const params = new URLSearchParams(searchParams);
-    navigate(`/${id}?${params.toString()}`);
   };
 
   return (
@@ -48,16 +37,21 @@ export default function HomePage() {
         inputValue={inputValue}
       />
       <div className="flex gap-6">
-        <section className={`${isDetailsOpen ? 'w-1/2' : 'w-full'}`}>
-          <MovieList movieList={movies} handleCardClick={handleCardClick} />
+        <section
+          className={`flex flex-col gap-10 ${isDetailsOpen ? 'w-1/2' : 'w-full'} `}
+        >
+          <MovieList movieList={movies} />
           {movies.length > 0 && (
-            <Pagination
-              currentPage={page}
-              totalPages={totalPages}
-              className=""
-            />
+            <div className="flex flex-col gap-10 items-center">
+              <Flyout />
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                className=""
+              />
+            </div>
           )}
-          <ErrorButton className="flex justify-end" />
+          <ErrorButton />
         </section>
 
         {isDetailsOpen && (
