@@ -1,13 +1,14 @@
 @import './styles/myNormalize.css';
 @import 'tailwindcss';
 
+
 :root {
   font-family: 'Roboto', Times, serif;
   font-size: 14px;
-  color: white;
+  color: black;
 }
 body {
-  background-color: black;
+  background-color: white;
 }
 
 .visually-hidden {
