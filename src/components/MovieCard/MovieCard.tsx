@@ -9,7 +9,12 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
-export default function MovieCard(movie: MovieItem) {
+type Props = {
+  movie: MovieItem;
+  compact?: boolean;
+};
+
+export default function MovieCard({ movie, compact = false }: Props) {
   const { id, posterPath, title, overview, releaseDate } = movie;
   const dispatch = useDispatch();
   const checked = useSelector(isCardSelected(id));
@@ -26,23 +31,38 @@ export default function MovieCard(movie: MovieItem) {
   };
 
   return (
-    <div className="flex gap-4 w-full p-4 bg-white/10" onClick={handleChange}>
-      <input type="checkbox" checked={checked} className="w-6 aspect-auto" />
-
-      <div className="w-[100px] h-[150px] overflow-hidden rounded">
+    <div
+      className="flex w-full gap-4 bg-gray-100 p-4 shadow dark:bg-white/10"
+      onClick={handleChange}
+    >
+      <input
+        type="checkbox"
+        checked={checked}
+        className="aspect-auto w-6"
+        readOnly
+      />
+      <div
+        className={`overflow-hidden rounded ${compact ? 'h-[100px] w-[60px]' : 'h-[150px] w-[100px]'}`}
+      >
         <img
           src={`${IMAGE_BASE_URL}${posterPath}`}
           alt={`${title} movie image`}
-          className="w-full h-full object-cover"
+          className="h-full w-full object-cover"
         />
       </div>
 
-      <div className="flex flex-1 flex-col gap-2 justify-items-start items-start">
-        <h3 className="font-bold text-sm sm:text-base md:text-xl lg:text-2xl">
+      <div className="flex flex-1 flex-col items-start justify-items-start gap-2">
+        <h3 className="text-sm font-bold sm:text-base md:text-xl lg:text-2xl">
           {title}
         </h3>
-        <p className="text-xs sm:text-sm md:text-base lg:text-lg">{overview}</p>
-        <p className="text-xs md:text-base">{releaseDate}</p>
+        <p
+          className={`text-xs sm:text-sm md:text-base lg:text-lg ${compact && 'line-clamp-2'}`}
+        >
+          {overview}
+        </p>
+        <p className={`"text-xs md:text-base ${compact && 'hidden'}`}>
+          {releaseDate}
+        </p>
 
         <Button onClick={handleShowMore(id)}>
           {messages.SHOW_MORE_BUTTON}

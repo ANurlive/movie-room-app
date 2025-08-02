@@ -14,8 +14,8 @@ export default function Details() {
   };
   return (
     <>
-      <div className="flex flex-col sticky top-6">
-        <MovieCard {...movie} />
+      <div className="sticky top-6 flex flex-col">
+        <MovieCard movie={movie} />
         <Button onClick={handleClose} className="ml-auto mt-6">
           Close
         </Button>

@@ -30,11 +30,21 @@ export default function Flyout() {
 
   if (cardsList.length === 0) return null;
   return (
-    <div className="fixed z-999 bottom-0 left-0 right-0 bg-white text-black text-2xl bold p-4 shadow-md border-t flex justify-between items-center">
+    <div className="z-999 bold fixed bottom-0 left-0 right-0 flex items-center justify-between border-t bg-white p-4 text-2xl text-black shadow-md">
       <span>{cardsList.length} item(s) selected</span>
       <div className="space-x-2">
-        <Button onClick={handleClear}>{messages.UNSELECT_BUTTON}</Button>
-        <Button onClick={handleDownload}>{messages.DOWNLOAD_BUTTON}</Button>
+        <Button
+          onClick={handleClear}
+          className="border-2 bg-transparent !text-black hover:!bg-gray-200"
+        >
+          {messages.UNSELECT_BUTTON}
+        </Button>
+        <Button
+          onClick={handleDownload}
+          className="border-2 bg-transparent !text-black hover:!bg-gray-200"
+        >
+          {messages.DOWNLOAD_BUTTON}
+        </Button>
       </div>
     </div>
   );

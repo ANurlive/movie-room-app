@@ -28,7 +28,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full items-center">
+    <div className="flex w-full flex-col items-center gap-4">
       <h2 className="visually-hidden">{HOME_PAGE_MESSAGES.HEADING}</h2>
 
       <SearchBar
@@ -38,11 +38,11 @@ export default function HomePage() {
       />
       <div className="flex gap-6">
         <section
-          className={`flex flex-col gap-10 ${isDetailsOpen ? 'w-1/2' : 'w-full'} `}
+          className={`flex flex-col gap-10 ${isDetailsOpen ? 'w-1/3' : 'w-full'} `}
         >
-          <MovieList movieList={movies} />
+          <MovieList movieList={movies} compactCards={isDetailsOpen} />
           {movies.length > 0 && (
-            <div className="flex flex-col gap-10 items-center">
+            <div className="flex flex-col items-center gap-10">
               <Flyout />
               <Pagination
                 currentPage={page}
@@ -55,7 +55,7 @@ export default function HomePage() {
         </section>
 
         {isDetailsOpen && (
-          <section className="w-1/2 relative">
+          <section className="relative w-2/3">
             <Outlet />
           </section>
         )}

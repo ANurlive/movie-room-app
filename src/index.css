@@ -1,15 +1,21 @@
 @import './styles/myNormalize.css';
-@import 'tailwindcss';
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   font-family: 'Roboto', Times, serif;
   font-size: 14px;
-  color: black;
 }
+
 body {
-  background-color: white;
+  @apply bg-white text-black;
 }
+
+.dark body {
+  @apply bg-black text-white;
+}
+
 
 .visually-hidden {
   position: absolute;

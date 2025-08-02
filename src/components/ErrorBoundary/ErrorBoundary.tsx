@@ -14,7 +14,7 @@ function FallbackUI() {
     navigate('/');
   };
   return (
-    <div className="w-full h-screen flex flex-col gap-6 justify-center items-center ">
+    <div className="flex h-screen w-full flex-col items-center justify-center gap-6">
       <p>{ERROR_BOUNDARY_MESSAGES.DEFAULT_ERROR_MESSAGE}</p>
       <Button onClick={handleClick}>{ERROR_BOUNDARY_MESSAGES.BUTTON}</Button>
     </div>

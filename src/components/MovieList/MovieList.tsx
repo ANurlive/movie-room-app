@@ -4,19 +4,20 @@ import MovieCard from '../MovieCard';
 
 export type Props = {
   movieList: MovieItem[];
+  compactCards?: boolean;
 };
 
-export default function MovieList({ movieList }: Props) {
+export default function MovieList({ movieList, compactCards = false }: Props) {
   if (movieList.length === 0) {
     return <EmptySearchResult />;
   }
   return (
-    <ul className="flex flex-col gap-4 mb-6">
+    <ul className="mb-6 flex flex-col gap-4">
       {movieList &&
         movieList.map((movie) => {
           return (
             <li key={movie.id}>
-              <MovieCard {...movie} />
+              <MovieCard movie={movie} compact={compactCards} />
             </li>
           );
         })}
