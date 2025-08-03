@@ -1,8 +1,15 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Details from '../Details';
-import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
+import {
+  MemoryRouter,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import type { MovieItem } from '../../types/types';
 import { PAGES } from '../../constants/pages';
+import { Provider } from 'react-redux';
+import store from '../../store';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -33,7 +40,13 @@ describe('Details', () => {
   });
 
   it('renders content and handles close', () => {
-    render(<Details />);
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Details />
+        </MemoryRouter>
+      </Provider>
+    );
     expect(screen.getByText('Test Movie')).toBeInTheDocument();
     expect(screen.getByText('Test overview')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /close/i }));

@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react';
-import { type Theme, ThemeContext } from './ThemeContext';
+import { Theme, ThemeContext } from './ThemeContext';
+import { LS_KEYS } from '../../constants/shared';
+import getInitTheme from '../../helpers/getInitTheme';
 
 const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>(() => {
-    const saved = localStorage.getItem('theme');
-    return saved === 'dark' ? 'dark' : 'light';
-  });
+  const [theme, setTheme] = useState<Theme>(getInitTheme());
 
   useEffect(() => {
-    localStorage.setItem('theme', theme);
-    //for tailwind automate activation to change it's theme
-    document.documentElement.classList.toggle('dark', theme === 'dark');
+    localStorage.setItem(LS_KEYS.THEME, theme);
+    document.documentElement.classList.toggle(Theme.DARK, theme === Theme.DARK);
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    setTheme((prev) => (prev === Theme.LIGHT ? Theme.DARK : Theme.LIGHT));
   };
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>

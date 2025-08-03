@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import ThemeProvider from './context/ThemeContext/ThemeProvider';
 
-import router from './router/router';
+import router from './router';
 
 const container = document.getElementById('root');
 if (!container) {

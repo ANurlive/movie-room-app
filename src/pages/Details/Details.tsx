@@ -14,7 +14,7 @@ export default function Details() {
   };
   return (
     <>
-      <div className="sticky top-6 flex flex-col">
+      <div className="sticky top-6 flex flex-col" data-testid="details">
         <MovieCard movie={movie} showMoreButton={false} />
         <Button onClick={handleClose} className="ml-auto mt-6">
           Close

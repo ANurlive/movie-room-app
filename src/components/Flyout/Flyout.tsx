@@ -21,7 +21,10 @@ export default function Flyout() {
 
   if (cardsList.length === 0) return null;
   return (
-    <div className="z-999 bold fixed bottom-0 left-0 right-0 flex items-center justify-between border-t bg-white p-4 text-2xl text-black shadow-md">
+    <div
+      data-testid="flyout"
+      className="z-999 bold fixed bottom-0 left-0 right-0 flex items-center justify-between border-t bg-white p-4 text-2xl text-black shadow-md"
+    >
       <span>{cardsList.length} item(s) selected</span>
       <div className="space-x-2">
         <Button

@@ -21,6 +21,7 @@ export default function ErrorButton({ className }: Props) {
       onClick={handleClick}
       data-action="throw-error"
       className={className}
+      data-testid="error-button"
     >
       {ERROR_BUTTON_MESSAGES.BUTTON_NAME}
     </Button>
