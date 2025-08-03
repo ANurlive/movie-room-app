@@ -2,12 +2,12 @@ import { useSelector } from 'react-redux';
 import { getSelectedCards } from '../../store/selectedCards/selectors';
 import { useDispatch } from 'react-redux';
 import { unselectAll } from '../../store/selectedCards/reducer';
-import { saveAs } from 'file-saver';
 import { messages } from './messages';
 import Button from '../Button';
+import downloadCards from './utils/downloadCards';
 
 export default function Flyout() {
-  const cards = useSelector(getSelectedCards); //it's an object like { id: {id:..., title: ...}, id: ...}
+  const cards = useSelector(getSelectedCards);
   const cardsList = Object.values({ ...cards });
   const dispatch = useDispatch();
 
@@ -16,16 +16,7 @@ export default function Flyout() {
   };
 
   const handleDownload = () => {
-    const csvRows = [
-      ['Title', 'Overview', 'Release date'],
-      cardsList.map((card) => [card.title, card.overview, card.releaseDate]),
-    ];
-    const csvContent = csvRows
-      .map((row) => row.map((val) => `"${val}"`).join(','))
-      .join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    saveAs(blob, `selected_movies.csv`);
+    downloadCards(cardsList);
   };
 
   if (cardsList.length === 0) return null;

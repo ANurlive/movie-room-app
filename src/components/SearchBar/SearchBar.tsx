@@ -1,13 +1,12 @@
 import { SEARCH_MESSAGES } from './messages';
 import Button from '../Button';
+import React from 'react';
 
 type Props = {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   inputValue: string;
 };
-
-import React from 'react';
 
 export default function SearchBar({
   handleChange,

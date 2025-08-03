@@ -1,17 +1,13 @@
-import type { MoviesGetResponse, ServerMovieType } from '../../types/types';
+import type { MovieItem, MoviesGetResponse } from '../../types/types';
 import { MOVIE_ENDPOINT_TYPE, options } from './constants';
 import { getMovieEndpoint } from './utils/getMovieEndpoint';
 import handleApiErrors from '../../helpers/handleAPIErrors';
 
 const movieService = {
-  getMoviesList: async (
-    page: number,
-    searchTerm?: string
+  getPopularList: async (
+    page: number
   ): Promise<Pick<MoviesGetResponse, 'results' | 'total_pages'>> => {
-    const url = searchTerm
-      ? getMovieEndpoint(MOVIE_ENDPOINT_TYPE.SEARCH, { page, searchTerm })
-      : getMovieEndpoint(MOVIE_ENDPOINT_TYPE.POPULAR, { page });
-
+    const url = getMovieEndpoint(MOVIE_ENDPOINT_TYPE.POPULAR, { page });
     const response = await handleApiErrors(await fetch(url, options));
     const { results, total_pages }: MoviesGetResponse = await response.json();
     return {
@@ -20,14 +16,38 @@ const movieService = {
     };
   },
 
-  getMovieDetails: async (id: string): Promise<ServerMovieType> => {
+  getSearchList: async (
+    page: number,
+    searchTerm: string
+  ): Promise<Pick<MoviesGetResponse, 'results' | 'total_pages'>> => {
+    const url = getMovieEndpoint(MOVIE_ENDPOINT_TYPE.SEARCH, {
+      page,
+      searchTerm,
+    });
+    const response = await handleApiErrors(await fetch(url, options));
+    const { results, total_pages }: MoviesGetResponse = await response.json();
+    return {
+      results,
+      total_pages,
+    };
+  },
+
+  getMovieDetails: async (movieId: string): Promise<MovieItem> => {
     const result = await handleApiErrors(
       await fetch(
-        getMovieEndpoint(MOVIE_ENDPOINT_TYPE.DETAILS, { id }),
+        getMovieEndpoint(MOVIE_ENDPOINT_TYPE.DETAILS, { id: movieId }),
         options
       )
     );
-    return await result.json();
+    const { id, title, overview, poster_path, release_date } =
+      await result.json();
+    return {
+      id,
+      title,
+      overview,
+      posterPath: poster_path,
+      releaseDate: release_date,
+    };
   },
 };
 

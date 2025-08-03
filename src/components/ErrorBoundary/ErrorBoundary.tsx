@@ -1,8 +1,4 @@
-import {
-  useRouteError,
-  isRouteErrorResponse,
-  useNavigate,
-} from 'react-router-dom';
+import { useRouteError, useNavigate } from 'react-router-dom';
 import ErrorMessage from '../ErrorMessage';
 import { ApiError } from '../../helpers/handleAPIErrors';
 import { ERROR_BOUNDARY_MESSAGES } from './messages';
@@ -24,13 +20,6 @@ function FallbackUI() {
 export default function ErrorBoundary() {
   const error = useRouteError();
 
-  if (isRouteErrorResponse(error)) {
-    return (
-      <div className="p-4">
-        <ErrorMessage errorCode={error.status} />
-      </div>
-    );
-  }
   if (error instanceof ApiError) {
     return <ErrorMessage errorCode={error.status} />;
   }

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import Layout from '.';
-import { LAYOUT_TEXT } from './messages';
+import { messages } from './messages';
 
 describe('Layout component test', () => {
   jest.mock('react-router-dom', () => ({
@@ -15,11 +15,11 @@ describe('Layout component test', () => {
   it('renders header with correct title', () => {
     const title = screen.getByRole('heading', { level: 1 });
     expect(title).toBeInTheDocument();
-    expect(title).toHaveTextContent(LAYOUT_TEXT.TITLE);
+    expect(title).toHaveTextContent(messages.TITLE);
   });
 
   it('renders footer with correct text', () => {
-    expect(screen.getByText(LAYOUT_TEXT.FOOTER)).toBeInTheDocument();
+    expect(screen.getByText(messages.FOOTER)).toBeInTheDocument();
   });
 
   it('renders routed content using Outlet', () => {

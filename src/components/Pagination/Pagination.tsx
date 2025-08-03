@@ -10,7 +10,7 @@ type Props = {
 export default function Pagination({
   currentPage,
   totalPages,
-  className,
+  className = '',
 }: Props): React.ReactElement {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -27,7 +27,7 @@ export default function Pagination({
   };
 
   return (
-    <div className={`flex gap-4 ${className ?? ''} text-xl`}>
+    <div className={`flex gap-4 text-xl ${className}`}>
       <Button onClick={handlePageTurn(-1)} disabled={currentPage === 1}>
         Prev
       </Button>

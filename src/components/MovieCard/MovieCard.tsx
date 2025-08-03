@@ -12,12 +12,17 @@ export const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 type Props = {
   movie: MovieItem;
   compact?: boolean;
+  showMoreButton?: boolean;
 };
 
-export default function MovieCard({ movie, compact = false }: Props) {
+export default function MovieCard({
+  movie,
+  compact = false,
+  showMoreButton = true,
+}: Props) {
   const { id, posterPath, title, overview, releaseDate } = movie;
   const dispatch = useDispatch();
-  const checked = useSelector(isCardSelected(id));
+  const isChecked = useSelector(isCardSelected(id));
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -25,19 +30,22 @@ export default function MovieCard({ movie, compact = false }: Props) {
     dispatch(toggleCard(movie));
   };
 
-  const handleShowMore = (id: number) => () => {
-    const params = new URLSearchParams(searchParams);
-    navigate(`/${id}?${params.toString()}`);
-  };
+  const handleShowMore =
+    (id: number) => (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      const params = new URLSearchParams(searchParams);
+      navigate(`/${id}?${params.toString()}`);
+    };
 
   return (
     <div
       className="flex w-full gap-4 bg-gray-100 p-4 shadow dark:bg-white/10"
       onClick={handleChange}
+      data-testid="movie-card"
     >
       <input
         type="checkbox"
-        checked={checked}
+        checked={isChecked}
         className="aspect-auto w-6"
         readOnly
       />
@@ -64,7 +72,10 @@ export default function MovieCard({ movie, compact = false }: Props) {
           {releaseDate}
         </p>
 
-        <Button onClick={handleShowMore(id)}>
+        <Button
+          onClick={handleShowMore(id)}
+          className={showMoreButton ? '' : 'hidden'}
+        >
           {messages.SHOW_MORE_BUTTON}
         </Button>
       </div>

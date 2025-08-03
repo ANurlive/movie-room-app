@@ -1,68 +1,61 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Pagination from './Pagination';
-import { BrowserRouter } from 'react-router-dom';
-import '@testing-library/jest-dom';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 
-jest.mock('react-router-dom', () => {
-  const actual = jest.requireActual('react-router-dom');
-  return {
-    ...actual,
-    useNavigate: jest.fn(),
-    useSearchParams: jest.fn(),
-  };
-});
+jest.mock('react-router-dom', () => ({
+  useNavigate: jest.fn(),
+  useLocation: jest.fn(),
+  useSearchParams: jest.fn(),
+}));
 
-const mockNavigate = jest.fn();
-const mockSearchParams = new URLSearchParams({ page: '2' });
+describe('Pagination', () => {
+  const mockNavigate = jest.fn();
+  const mockLocation = { pathname: '/movies' };
+  const mockSearchParams = new URLSearchParams('page=2');
 
-beforeEach(() => {
-  (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
-  (useSearchParams as jest.Mock).mockReturnValue([mockSearchParams]);
-  mockNavigate.mockClear();
-});
-
-const renderPagination = (currentPage: number, totalPages: number) => {
-  render(
-    <BrowserRouter>
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        handlePageTurn={() => {}}
-      />
-    </BrowserRouter>
-  );
-};
-
-describe('Pagination component', () => {
-  it('renders current page number', () => {
-    renderPagination(2, 5);
-    expect(screen.getByText('Page #2')).toBeInTheDocument();
+  beforeEach(() => {
+    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
+    (useLocation as jest.Mock).mockReturnValue(mockLocation);
+    (useSearchParams as jest.Mock).mockReturnValue([
+      mockSearchParams,
+      jest.fn(),
+    ]);
+    jest.clearAllMocks();
   });
 
-  it('disables Prev button on the first page', () => {
-    renderPagination(1, 5);
-    const prevButton = screen.getByText('Prev') as HTMLButtonElement;
-    expect(prevButton).toBeDisabled();
+  it('renders current page and total pages', () => {
+    render(<Pagination currentPage={2} totalPages={5} />);
+    expect(screen.getByText('Page 2 of 5')).toBeInTheDocument();
   });
 
-  it('disables Next button on the last page', () => {
-    renderPagination(5, 5);
-    const nextButton = screen.getByText('Next') as HTMLButtonElement;
-    expect(nextButton).toBeDisabled();
+  it('disables "Prev" button on first page', () => {
+    render(<Pagination currentPage={1} totalPages={5} />);
+    expect(screen.getByText('Prev')).toBeDisabled();
   });
 
-  it('calls navigate with correct page when clicking Next', () => {
-    renderPagination(2, 5);
-    const nextButton = screen.getByText('Next');
-    fireEvent.click(nextButton);
-    expect(mockNavigate).toHaveBeenCalledWith('/?page=3');
+  it('disables "Next" button on last page', () => {
+    render(<Pagination currentPage={5} totalPages={5} />);
+    expect(screen.getByText('Next')).toBeDisabled();
   });
 
-  it('calls navigate with correct page when clicking Prev', () => {
-    renderPagination(3, 5);
-    const prevButton = screen.getByText('Prev');
-    fireEvent.click(prevButton);
-    expect(mockNavigate).toHaveBeenCalledWith('/?page=2');
+  it('navigates to previous page when "Prev" is clicked', () => {
+    render(<Pagination currentPage={3} totalPages={5} />);
+    fireEvent.click(screen.getByText('Prev'));
+    expect(mockNavigate).toHaveBeenCalledWith('/movies?page=2');
+  });
+
+  it('navigates to next page when "Next" is clicked', () => {
+    render(<Pagination currentPage={3} totalPages={5} />);
+    fireEvent.click(screen.getByText('Next'));
+    expect(mockNavigate).toHaveBeenCalledWith('/movies?page=4');
+  });
+
+  it('includes additional className if provided', () => {
+    render(
+      <Pagination currentPage={2} totalPages={5} className="custom-class" />
+    );
+    expect(screen.getByText('Page 2 of 5').parentElement).toHaveClass(
+      'custom-class'
+    );
   });
 });

@@ -14,12 +14,14 @@ const selectedCardsSlice = createSlice({
   reducers: {
     toggleCard(state, action: PayloadAction<MovieItem>) {
       const id = action.payload.id;
+
       if (state.cards[id]) {
         state.cards = omit(state.cards, id);
       } else {
         state.cards[id] = action.payload;
       }
     },
+
     unselectAll(state) {
       state.cards = {};
     },

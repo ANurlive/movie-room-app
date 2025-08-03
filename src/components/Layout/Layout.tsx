@@ -1,5 +1,6 @@
+import { PAGES } from '../../constants/pages';
 import ToggleThemeButton from '../ToggleThemeButton/ToggleThemeButton';
-import { LAYOUT_TEXT } from './messages';
+import { messages } from './messages';
 import { NavLink, Outlet } from 'react-router-dom';
 
 export default function Layout() {
@@ -8,14 +9,14 @@ export default function Layout() {
       <header className="flex justify-between">
         <div className="flex-col items-center justify-center gap-6">
           <h1 className="text-4xl font-extrabold uppercase text-red-600">
-            {LAYOUT_TEXT.TITLE}
+            {messages.TITLE}
           </h1>
           <nav className="flex gap-6">
-            <NavLink to="/" className="text-2xl">
-              Home
+            <NavLink to={PAGES.HOME} className="text-2xl">
+              {messages.NAV_HOME}
             </NavLink>
-            <NavLink to="/about" className="text-2xl">
-              About
+            <NavLink to={PAGES.ABOUT} className="text-2xl">
+              {messages.NAV_ABOUT}
             </NavLink>
           </nav>
         </div>
@@ -25,7 +26,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <footer className="h-12 text-center text-xs text-gray-400">
-        {LAYOUT_TEXT.FOOTER}
+        {messages.FOOTER}
       </footer>
     </div>
   );

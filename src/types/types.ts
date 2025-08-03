@@ -34,7 +34,6 @@ export type LoaderData = {
   movies: MovieItem[];
   page: number;
   totalPages: number;
-  searchTerm: string;
 };
 
 export type getDetailsResponse = {

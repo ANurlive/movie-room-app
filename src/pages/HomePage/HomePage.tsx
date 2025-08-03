@@ -28,38 +28,37 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex w-full flex-col items-center gap-4">
-      <h2 className="visually-hidden">{HOME_PAGE_MESSAGES.HEADING}</h2>
+    <>
+      <div className="flex w-full flex-col items-center gap-4">
+        <h2 className="visually-hidden">{HOME_PAGE_MESSAGES.HEADING}</h2>
 
-      <SearchBar
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        inputValue={inputValue}
-      />
-      <div className="flex gap-6">
-        <section
-          className={`flex flex-col gap-10 ${isDetailsOpen ? 'w-1/3' : 'w-full'} `}
-        >
-          <MovieList movieList={movies} compactCards={isDetailsOpen} />
-          {movies.length > 0 && (
-            <div className="flex flex-col items-center gap-10">
-              <Flyout />
-              <Pagination
-                currentPage={page}
-                totalPages={totalPages}
-                className=""
-              />
-            </div>
-          )}
-          <ErrorButton />
-        </section>
-
-        {isDetailsOpen && (
-          <section className="relative w-2/3">
-            <Outlet />
+        <SearchBar
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          inputValue={inputValue}
+        />
+        <div className="flex gap-6">
+          <section
+            className={`flex flex-col gap-10 ${isDetailsOpen ? 'w-1/3' : 'w-full'} `}
+          >
+            <MovieList movieList={movies} compactCards={isDetailsOpen} />
+            {movies.length > 0 && (
+              <div className="flex flex-col items-center gap-10">
+                <Pagination currentPage={page} totalPages={totalPages} />
+              </div>
+            )}
+            <ErrorButton />
           </section>
-        )}
+
+          {isDetailsOpen && (
+            <section className="relative w-2/3">
+              <Outlet />
+            </section>
+          )}
+        </div>
       </div>
-    </div>
+
+      <Flyout />
+    </>
   );
 }
