@@ -1,10 +1,24 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import './index.css';
+import { RouterProvider } from 'react-router-dom';
 
-createRoot(document.getElementById('root')!).render(
+import { Provider } from 'react-redux';
+import store from './store';
+import ThemeProvider from './context/ThemeContext/ThemeProvider';
+
+import router from './router';
+
+const container = document.getElementById('root');
+if (!container) {
+  throw new Error('Root container not found');
+}
+createRoot(container).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <Provider store={store}>
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </Provider>
+  </StrictMode>
+);
