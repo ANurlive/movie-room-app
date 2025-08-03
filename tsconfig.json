@@ -10,5 +10,6 @@
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "tsconfig.test.json", "jest.setup.ts", "jest.config.ts"]
+  "include": ["src", "tsconfig.test.json", "jest.setup.ts", "jest.config.ts" ],
+ 
 }
