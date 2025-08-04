@@ -1,4 +1,8 @@
-import type { MovieItem, MoviesGetResponse } from '../../types/types';
+import type {
+  getDetailsResponse,
+  MovieItem,
+  MoviesGetResponse,
+} from '../../types/types';
 import { MOVIE_ENDPOINT_TYPE, options } from './constants';
 import { getMovieEndpoint } from './utils/getMovieEndpoint';
 import handleApiErrors from '../../helpers/handleAPIErrors';
@@ -40,7 +44,7 @@ const movieService = {
       )
     );
     const { id, title, overview, poster_path, release_date } =
-      await result.json();
+      (await result.json()) as getDetailsResponse;
     return {
       id,
       title,
