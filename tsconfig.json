@@ -14,7 +14,7 @@
       "react-router/dom": ["node_modules/react-router-dom"]
     },
   },
-  "include": ["src"  ],
+
   "exclude": ["tsconfig.test.json", "jest.setup.ts", "jest.config.ts"]
  
 }
