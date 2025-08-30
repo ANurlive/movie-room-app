@@ -2,16 +2,20 @@ import type { Config } from 'jest';
 
 const config: Config = {
   preset: 'ts-jest',
+  transform: {
+    '^.+\\.(ts|tsx)$': [
+      'ts-jest',
+      {
+        tsconfig: 'tsconfig.test.json',
+      },
+    ],
+  },
   testEnvironment: 'jsdom',
   silent: true,
   moduleNameMapper: {
     '\\.(css|scss)$': 'identity-obj-proxy',
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-  transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
-  },
-
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}', '!/node_modules/'],
   coveragePathIgnorePatterns: [
     '/node_modules/',

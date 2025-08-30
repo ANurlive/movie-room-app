@@ -3,16 +3,29 @@ import SearchBar from '../../components/SearchBar';
 import MovieList from '../../components/MovieList';
 import ErrorButton from '../../components/ErrorButton';
 import Pagination from '../../components/Pagination';
-import { Outlet, useLoaderData, useSearchParams } from 'react-router-dom';
-import type { LoaderData } from '../../types/types';
+import { Outlet, useParams, useSearchParams } from 'react-router-dom';
 import useLocalStorage from './useLocalStorage';
 import Flyout from '../../components/Flyout';
+import { useGetMoviesQuery } from '../../services/movie-service/movieApi';
+import Loader from '../../components/Loader';
+import ErrorMessage from '../../components/ErrorMessage';
+import EmptySearchResult from '../../components/EmptySearchResult';
 
 export default function HomePage() {
-  const { movies, page, totalPages } = useLoaderData<LoaderData>();
   const { inputValue, setInputValue, saveValueToLS } = useLocalStorage();
   const [searchParams, setSearchParams] = useSearchParams();
-  const isDetailsOpen = /^\/\d+/.test(location.pathname);
+  const { id } = useParams();
+  const isDetailsOpen = Boolean(id);
+
+  const searchTerm = searchParams.get('query') || undefined;
+  const page = Number(searchParams.get('page')) || 1;
+
+  const { data, isLoading, error, isFetching } = useGetMoviesQuery({
+    page,
+    searchTerm,
+  });
+  const movies = data?.results ?? [];
+  const totalPages = data?.totalPages ?? 0;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -26,6 +39,24 @@ export default function HomePage() {
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
+
+  let content;
+  if (isLoading || isFetching) {
+    content = <Loader />;
+  } else if (error) {
+    content = <ErrorMessage error={error} />;
+  } else if (movies.length === 0) {
+    content = <EmptySearchResult />;
+  } else {
+    content = (
+      <>
+        <MovieList movieList={movies} compactCards={isDetailsOpen} />
+        <div className="flex flex-col items-center gap-10">
+          <Pagination currentPage={page} totalPages={totalPages} />
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -41,12 +72,7 @@ export default function HomePage() {
           <section
             className={`flex flex-col gap-10 ${isDetailsOpen ? 'w-1/3' : 'w-full'} `}
           >
-            <MovieList movieList={movies} compactCards={isDetailsOpen} />
-            {movies.length > 0 && (
-              <div className="flex flex-col items-center gap-10">
-                <Pagination currentPage={page} totalPages={totalPages} />
-              </div>
-            )}
+            {content}
             <ErrorButton />
           </section>
 
