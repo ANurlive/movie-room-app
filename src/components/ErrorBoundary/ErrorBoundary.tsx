@@ -1,27 +1,45 @@
-import { useRouteError, useNavigate } from 'react-router-dom';
-import ErrorMessage from '../ErrorMessage';
-import { ApiError } from '../../helpers/handleAPIErrors';
-import { ERROR_BOUNDARY_MESSAGES } from './messages';
+import { Component } from 'react';
 import Button from '../Button';
+import { ERROR_BOUNDARY_MESSAGES } from './messages';
 
-function FallbackUI() {
-  const navigate = useNavigate();
-  const handleClick = () => {
-    navigate('/');
-  };
-  return (
-    <div className="flex h-screen w-full flex-col items-center justify-center gap-6">
-      <p>{ERROR_BOUNDARY_MESSAGES.DEFAULT_ERROR_MESSAGE}</p>
-      <Button onClick={handleClick}>{ERROR_BOUNDARY_MESSAGES.BUTTON}</Button>
-    </div>
-  );
-}
+type Props = {
+  children: React.ReactNode;
+};
 
-export default function ErrorBoundary() {
-  const error = useRouteError();
+type State = {
+  hasError: boolean;
+};
 
-  if (error instanceof ApiError) {
-    return <ErrorMessage errorCode={error.status} />;
+export default class ErrorBoundary extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { hasError: false };
   }
-  return <FallbackUI />;
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: unknown) {
+    console.error('ErrorBoundary caught an error', error, errorInfo);
+  }
+
+  handleReload = () => {
+    window.location.href = '/';
+  };
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="flex h-screen w-full flex-col items-center justify-center gap-6">
+          <p>{ERROR_BOUNDARY_MESSAGES.DEFAULT_ERROR_MESSAGE}</p>
+          <Button onClick={this.handleReload}>
+            {ERROR_BOUNDARY_MESSAGES.BUTTON}
+          </Button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
 }

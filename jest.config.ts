@@ -6,7 +6,7 @@ const config: Config = {
     '^.+\\.(ts|tsx)$': [
       'ts-jest',
       {
-        tsconfig: 'tsconfig.test.json', // 👈 сюда перенесли
+        tsconfig: 'tsconfig.test.json',
       },
     ],
   },
